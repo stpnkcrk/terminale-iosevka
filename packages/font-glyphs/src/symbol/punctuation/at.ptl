@@ -45,7 +45,8 @@ glyph-block Symbol-Punctuation-At : begin
 				Arch.lhs.centerAt.ltr.b Middle bot (knot-ty -- flat)
 				curl (RightSB - HalfStroke + TanSlope * sw) (bot + O)
 
-	define [FourFoldShape height fSolidInner] : glyph-proc
+	# Terminale: fHolding draws the loops as a holding pattern: straight legs, turns of half the width.
+	define [FourFoldShape height fSolidInner fHolding] : glyph-proc
 		local df : include : DivFrame para.advanceScaleM [if fSolidInner 3.25 4]
 
 		local top : SymbolMid + height / 2
@@ -61,13 +62,13 @@ glyph-block Symbol-Punctuation-At : begin
 		local m1 : [mix (df.leftSB + [HSwToV (sw / 2)]) (df.rightSB - [HSwToV (sw / 2)]) kM12      ] - [HSwToV (sw * kM12Sw)]
 		local m2 : [mix (df.leftSB + [HSwToV (sw / 2)]) (df.rightSB - [HSwToV (sw / 2)]) (1 - kM12)] + [HSwToV (sw * kM12Sw)]
 
-		local ad : ArchDepth * [Math.sqrt df.adws]
-		local ada : ArchDepthAOf ad df.width
-		local adb : ArchDepthBOf ad df.width
+		local ad : if fHolding ((df.rightSB - df.leftSB) / 2) (ArchDepth * [Math.sqrt df.adws])
+		local ada : if fHolding ad [ArchDepthAOf ad df.width]
+		local adb : if fHolding ad [ArchDepthBOf ad df.width]
 
 		local adInner : Math.max (ad * (m2 - m1) / (df.rightSB - df.leftSB)) (sw * 1.25)
-		local adaInner : ArchDepthAOf adInner (m2 - m1 + df.leftSB * 2)
-		local adbInner : ArchDepthBOf adInner (m2 - m1 + df.leftSB * 2)
+		local adaInner : if fHolding adInner [ArchDepthAOf adInner (m2 - m1 + df.leftSB * 2)]
+		local adbInner : if fHolding adInner [ArchDepthBOf adInner (m2 - m1 + df.leftSB * 2)]
 
 		include : union
 			dispiro
@@ -158,7 +159,13 @@ glyph-block Symbol-Punctuation-At : begin
 
 		compact                 { CompactShape   CAP          false }
 
-	foreach { suffix { body height fSolidInner } } [Object.entries AtConfig] : do
-		create-glyph "at.\(suffix)" : body height fSolidInner
+		# Terminale: holding pattern
+		holding                 { FourFoldShape  NormalHeight false true }
+		holdingTall             { FourFoldShape  TallHeight   false true }
+		holdingSolidInner       { FourFoldShape  NormalHeight true  true }
+		holdingSolidInnerTall   { FourFoldShape  TallHeight   true  true }
+
+	foreach { suffix { body height fSolidInner fHolding } } [Object.entries AtConfig] : do
+		create-glyph "at.\(suffix)" : body height fSolidInner fHolding
 
 	select-variant 'at' '@'

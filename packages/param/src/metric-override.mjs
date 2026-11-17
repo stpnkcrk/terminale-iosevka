@@ -47,6 +47,7 @@ const validMetricOverrideFields = new Set([
 	"archDepth",
 	"smallArchDepth",
 	"advanceScaleSp",
+	"superness", // Terminale: curve squareness (2 = ellipse, higher = squarer)
 ]);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

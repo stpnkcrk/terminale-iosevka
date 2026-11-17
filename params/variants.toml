@@ -10062,6 +10062,11 @@ next = "END"
 descriptionAffix = "compact body"
 selectorAffix.at = "compact"
 
+[prime.at.variants-buildup.stages.folds.holding]
+rank = 4
+descriptionAffix = "holding-pattern body (Terminale)"
+selectorAffix.at = "holding"
+
 [prime.at.variants-buildup.stages.inner."*"]
 next = "height"
 
