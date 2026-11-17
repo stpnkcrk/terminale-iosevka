@@ -50,6 +50,8 @@ const validMetricOverrideFields = new Set([
 	"superness", // Terminale: curve squareness (2 = ellipse, higher = squarer)
 	"caronPointer", // Terminale: 1 draws the caron as a heading pointer
 	"tickAccents", // Terminale: 1 draws grave and acute as flat-cut ticks
+	"tickAccentShift", // Terminale: 0 centres the tick, 1 puts its foot on the centre
+	"diacriticDotScale", // Terminale: size of the dot above (tittle, ż, ė)
 ]);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

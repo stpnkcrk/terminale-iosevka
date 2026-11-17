@@ -97,7 +97,7 @@ glyph-block Mark-Above : begin
 		create-glyph "dotAbove.\(suffix)" : glyph-proc
 			set-width 0
 			include : StdAnchors.narrow
-			include : DrawAt markMiddle aboveMarkMid (DotRadius * kdr)
+			include : DrawAt markMiddle aboveMarkMid (DotRadius * kdr * para.diacriticDotScale)
 			ScheduleLeaningMark.set currentGlyph
 
 		create-glyph "dieresisAbove.\(suffix)" : glyph-proc
@@ -242,8 +242,9 @@ glyph-block Mark-Above : begin
 		local h   : aboveMarkTop - aboveMarkBot
 		local len : Math.hypot (2 * dx) h
 		local tH  : sw * len / h
-		local xb  : markMiddle - dir * dx
-		local xt  : markMiddle + dir * dx
+		local tShift : 0 + para.tickAccentShift
+		local xb  : markMiddle - dir * dx * (1 - tShift)
+		local xt  : markMiddle + dir * dx * (1 + tShift)
 		return : spiro-outline
 			corner (xb - tH / 2) aboveMarkBot
 			corner (xb + tH / 2) aboveMarkBot

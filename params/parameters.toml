@@ -41,6 +41,8 @@ overshootx = -8         # Horizontal overshoot for arcs.
 superness = 2.275       # Terminale: squareness of arcs; 2 is an ellipse, higher is squarer.
 caronPointer = 0        # Terminale: 1 draws the caron (háček) as a heading pointer.
 tickAccents = 0         # Terminale: 1 draws grave and acute as flat-cut ticks.
+tickAccentShift = 0     # Terminale: 0 centres the tick on the anchor, 1 puts its foot there.
+diacriticDotScale = 1   # Terminale: size of the dot above (tittle on i and j, ż, ė).
 oxhook = -2             # Horizontal overshoot for hook tips.
 
 refJut = 85
