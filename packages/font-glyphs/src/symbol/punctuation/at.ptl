@@ -160,9 +160,10 @@ glyph-block Symbol-Punctuation-At : begin
 		compact                 { CompactShape   CAP          false }
 
 		# Terminale: holding pattern
-		holding                 { FourFoldShape  NormalHeight false true }
+		# The tall height gives the legs their length; a holding pattern is longer than it is wide.
+		holding                 { FourFoldShape  TallHeight   false true }
 		holdingTall             { FourFoldShape  TallHeight   false true }
-		holdingSolidInner       { FourFoldShape  NormalHeight true  true }
+		holdingSolidInner       { FourFoldShape  TallHeight   true  true }
 		holdingSolidInnerTall   { FourFoldShape  TallHeight   true  true }
 
 	foreach { suffix { body height fSolidInner fHolding } } [Object.entries AtConfig] : do

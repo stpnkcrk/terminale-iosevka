@@ -6,7 +6,7 @@ import as SpiroKit from "@iosevka/font-kits/spiro-kit"
 import as BooleKit from "@iosevka/font-kits/boole-kit"
 import as LetterModel from "@iosevka/font-kits/letter-model"
 import [DesignParameters calculateMetrics setFontMetrics] from "./meta/aesthetics.mjs"
-import [$NamedParameterPair$ fallback] from "@iosevka/util"
+import [$NamedParameterPair$] from "@iosevka/util"
 
 extern isFinite
 
@@ -34,6 +34,13 @@ export : define [buildGlyphs para recursive] : begin
 	# Glyph saving sink
 	define $GlyphSaveSink$ : new GlyphSaveSink $Exec$ Metrics glyphStore
 
+	# Terminale: a build plan may set `superness`; arcs, arch midpoints and hooks all follow it
+	if (para.superness != nothing && para.superness != DesignParameters.superness) : begin
+		local d : para.superness - 2.275
+		set DesignParameters.superness para.superness
+		set DesignParameters.tightHookSuperness (2.30 + d)
+		set DesignParameters.rHookSuperness (2.35 + d)
+
 	# Spiro kit and boole kit
 	define SpiroFns : SpiroKit.SetupBuilders : object
 		globalTransform Metrics.GlobalTransform
@@ -41,7 +48,7 @@ export : define [buildGlyphs para recursive] : begin
 		Stroke          Metrics.Stroke
 		CorrectionOMidX Metrics.CorrectionOMidX
 		TINY            Metrics.TINY
-		Superness       : fallback para.superness DesignParameters.superness # Terminale: overridable
+		Superness       DesignParameters.superness
 	define BooleFns : BooleKit.SetupBuilders : object
 		globalTransform Metrics.GlobalTransform
 
