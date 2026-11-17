@@ -234,10 +234,29 @@ glyph-block Mark-Above : begin
 	select-variant 'ringDotAbove' (follow -- 'diacriticDot')
 
 	#### Grave/Acute Marks
+	# Terminale: grave and acute as ticks, a steep parallelogram of even stroke with flat (horizontal) cuts.
+	# dir = -1 for the grave (top to the left), +1 for the acute (top to the right).
+	define [TickAccentShape dir] : begin
+		local sw  : markStress * 1.7
+		local dx  : markExtend * 0.42
+		local h   : aboveMarkTop - aboveMarkBot
+		local len : Math.hypot (2 * dx) h
+		local tH  : sw * len / h
+		local xb  : markMiddle - dir * dx
+		local xt  : markMiddle + dir * dx
+		return : spiro-outline
+			corner (xb - tH / 2) aboveMarkBot
+			corner (xb + tH / 2) aboveMarkBot
+			corner (xt + tH / 2) aboveMarkTop
+			corner (xt - tH / 2) aboveMarkTop
+
+	define fTickAccents : para.tickAccents && para.tickAccents > 0
+
 	create-glyph 'graveAbove' 0x300 : glyph-proc
 		set-width 0
 		include : StdAnchors.medium
-		include : dispiro
+		if fTickAccents : include : TickAccentShape (-1)
+		if [not fTickAccents] : include : dispiro
 			flat (markMiddle + 1.000 * markStress) aboveMarkBot [widths.center : 2 * markFine]
 			curl (markMiddle - 0.875 * markExtend) aboveMarkTop [widths.center : 2 * markStress]
 
@@ -265,7 +284,8 @@ glyph-block Mark-Above : begin
 	create-glyph 'acuteAbove' 0x301 : glyph-proc
 		set-width 0
 		include : StdAnchors.medium
-		include : dispiro
+		if fTickAccents : include : TickAccentShape (+1)
+		if [not fTickAccents] : include : dispiro
 			flat (markMiddle - 1.000 * markStress) aboveMarkBot [widths.center : 2 * markFine]
 			curl (markMiddle + 0.875 * markExtend) aboveMarkTop [widths.center : 2 * markStress]
 
