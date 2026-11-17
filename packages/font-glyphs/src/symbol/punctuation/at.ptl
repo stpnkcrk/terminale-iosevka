@@ -10,7 +10,8 @@ glyph-block Symbol-Punctuation-At : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 
-	define [ThreeFoldShape height fSolidInner] : glyph-proc
+	# Terminale: fHolding as in FourFoldShape; the narrow (Mono) holding pattern.
+	define [ThreeFoldShape height fSolidInner fHolding] : glyph-proc
 		local top : SymbolMid + height / 2
 		local bot : SymbolMid - height / 2
 		local otop : mix bot top 0.75
@@ -20,8 +21,12 @@ glyph-block Symbol-Punctuation-At : begin
 		local m1 : if fSolidInner [mix SB RightSB 0.5] : [mix (SB + sw) (RightSB - sw) 0.47] - sw / 2
 		local m2 : [mix m1 RightSB 0.52] + TanSlope * sw
 
-		local ada : ArchDepthA * ((RightSB - m1) / (RightSB - SB) * 1.1)
-		local adb : ArchDepthB * ((RightSB - m1) / (RightSB - SB) * 1.1)
+		local holdIn  : Math.min ((RightSB - m1) / 2) ((otop - obot) / 2 - sw / 4)
+		local ada : if fHolding holdIn [ArchDepthA * ((RightSB - m1) / (RightSB - SB) * 1.1)]
+		local adb : if fHolding holdIn [ArchDepthB * ((RightSB - m1) / (RightSB - SB) * 1.1)]
+		local holdOut : Math.min ((RightSB - SB) / 2) ((top - bot) / 2 - sw / 4)
+		local oda : if fHolding holdOut ArchDepthA
+		local odb : if fHolding holdOut ArchDepthB
 
 		include : union
 			[if fSolidInner spiro-outline dispiro]
@@ -37,10 +42,10 @@ glyph-block Symbol-Punctuation-At : begin
 			dispiro
 				widths.lhs sw
 				flat RightSB (obot + ada)
-				curl RightSB (top - ArchDepthB)
+				curl RightSB (top - odb)
 				Arch.lhs top
-				flat SB (top - ArchDepthA) [widths.lhs sw]
-				curl SB (bot + ArchDepthB)
+				flat SB (top - oda) [widths.lhs sw]
+				curl SB (bot + odb)
 				arcvh
 				Arch.lhs.centerAt.ltr.b Middle bot (knot-ty -- flat)
 				curl (RightSB - HalfStroke + TanSlope * sw) (bot + O)
@@ -159,7 +164,13 @@ glyph-block Symbol-Punctuation-At : begin
 
 		compact                 { CompactShape   CAP          false }
 
-		# Terminale: holding pattern
+		# Terminale: holding pattern, narrow (three-fold) for Mono
+		holdingThreefold                 { ThreeFoldShape NormalHeight false true }
+		holdingThreefoldTall             { ThreeFoldShape TallHeight   false true }
+		holdingThreefoldSolidInner       { ThreeFoldShape NormalHeight true  true }
+		holdingThreefoldSolidInnerTall   { ThreeFoldShape TallHeight   true  true }
+
+		# Terminale: holding pattern, wide (four-fold) for Testo
 		# The tall height gives the legs their length; a holding pattern is longer than it is wide.
 		holding                 { FourFoldShape  TallHeight   false true }
 		holdingTall             { FourFoldShape  TallHeight   false true }

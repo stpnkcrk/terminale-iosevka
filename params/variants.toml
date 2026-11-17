@@ -10067,6 +10067,11 @@ rank = 4
 descriptionAffix = "holding-pattern body (Terminale)"
 selectorAffix.at = "holding"
 
+[prime.at.variants-buildup.stages.folds.holding-threefold]
+rank = 5
+descriptionAffix = "narrow holding-pattern body (Terminale)"
+selectorAffix.at = "holdingThreefold"
+
 [prime.at.variants-buildup.stages.inner."*"]
 next = "height"
 
