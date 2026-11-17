@@ -48,6 +48,7 @@ const validMetricOverrideFields = new Set([
 	"smallArchDepth",
 	"advanceScaleSp",
 	"superness", // Terminale: curve squareness (2 = ellipse, higher = squarer)
+	"caronPointer", // Terminale: 1 draws the caron as a heading pointer
 ]);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

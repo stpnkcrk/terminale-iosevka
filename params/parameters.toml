@@ -39,6 +39,7 @@ accentStackOffset = 205 # Offset height of accent mark stack.
 overshoot = -8          # Vertical overshoot for arcs.
 overshootx = -8         # Horizontal overshoot for arcs.
 superness = 2.275       # Terminale: squareness of arcs; 2 is an ellipse, higher is squarer.
+caronPointer = 0        # Terminale: 1 draws the caron (háček) as a heading pointer.
 oxhook = -2             # Horizontal overshoot for hook tips.
 
 refJut = 85

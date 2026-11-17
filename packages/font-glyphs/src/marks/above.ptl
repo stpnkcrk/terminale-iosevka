@@ -453,16 +453,27 @@ glyph-block Mark-Above : begin
 		CaronLeftShape  top bottom xMiddle width swEnd swMid
 		CaronRightShape top bottom xMiddle width swEnd swMid
 
+	# Terminale: the caron as a heading pointer, a sharp chevron of even stroke with flat-cut tops.
+	define [HeadingPointerCaronShape] : with-params [top bottom xMiddle width sw] : begin
+		local hw  : width / 2
+		local h   : top - bottom
+		local len : Math.hypot hw h
+		local tH  : Math.min (sw * len / h) (hw * 0.8)
+		local tV  : Math.min (sw * len / hw) (h * 0.8)
+		return : spiro-outline
+			corner (xMiddle - hw) top
+			corner (xMiddle - hw + tH) top
+			corner xMiddle (bottom + tV)
+			corner (xMiddle + hw - tH) top
+			corner (xMiddle + hw) top
+			corner xMiddle bottom
+
 	create-glyph 'caronAbove' 0x30C : glyph-proc
 		set-width 0
 		include : StdAnchors.medium
-		include : CaronShape
-			xMiddle -- markMiddle
-			width   -- CaretCaronWidth
-			top     -- (aboveMarkTop - markStress + 1.7 * markFine)
-			bottom  -- aboveMarkBot
-			swEnd   -- CaretCaronTerminalSw
-			swMid   -- CaretCaronMidSw
+		local fPointer : para.caronPointer && para.caronPointer > 0
+		if fPointer : include : HeadingPointerCaronShape (xMiddle -- markMiddle) (width -- (CaretCaronWidth * 1.1)) (top -- (aboveMarkTop - markStress + 1.7 * markFine)) (bottom -- (aboveMarkBot - markFine)) (sw -- (markStroke * 0.8))
+		if [not fPointer] : include : CaronShape (xMiddle -- markMiddle) (width -- CaretCaronWidth) (top -- (aboveMarkTop - markStress + 1.7 * markFine)) (bottom -- aboveMarkBot) (swEnd -- CaretCaronTerminalSw) (swMid -- CaretCaronMidSw)
 
 	create-glyph 'barupAbove' 0x1DC4 : glyph-proc
 		set-width 0
