@@ -43,6 +43,8 @@ caronPointer = 0        # Terminale: 1 draws the caron (háček) as a heading po
 tickAccents = 0         # Terminale: 1 draws grave and acute as flat-cut ticks.
 tickAccentShift = 0     # Terminale: 0 centres the tick on the anchor, 1 puts its foot there.
 diacriticDotScale = 1   # Terminale: size of the dot above (tittle on i and j, ż, ė).
+lauraRing = 0           # Terminale: 1 draws the ring (ů, å, °) as a true circle, Laura's ring.
+vorAsterisk = 0         # Terminale: 1 opens the six-armed asterisk into a VOR symbol.
 oxhook = -2             # Horizontal overshoot for hook tips.
 
 refJut = 85

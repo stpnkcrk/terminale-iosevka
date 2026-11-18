@@ -26,18 +26,35 @@ glyph-block Symbol-Punctuation-Asterisk : begin
 		list { 6  1.2   0.5  0.4   GeometryStroke  } { 'opAsterisk'     ''              ''         } { ''              ''            'turnHex'       ''                ''            }
 		list { 8  1.2   0.5  0.4  [AdviceStroke 3] } { 'flower'         ''              ''         } { 'high'          'ST'          'sMid'          ''                ''            }
 
+	define [AsteriskArms sides rot radius fine final] : glyph-proc
+		foreach j [range 0 sides] : begin
+			local s : Math.sin ((2 * j / sides + rot) * Math.PI)
+			local c : Math.cos ((2 * j / sides + rot) * Math.PI)
+			include : dispiro
+				flat Middle                 SymbolMid               [widths.center : 2 * fine]
+				curl (Middle + radius * s) (SymbolMid + radius * c) [widths.center : 2 * final]
+
+	# Terminale: the VOR asterisk, after the VOR symbol on aeronautical charts: six arms leaving a hexagon, a dot inside.
+	define [HexCorner x y r j] : corner (x + r * [Math.sin (j * Math.PI / 3)]) (y + r * [Math.cos (j * Math.PI / 3)])
+	define [HexAt x y r] : spiro-outline
+		HexCorner x y r 0
+		HexCorner x y r 1
+		HexCorner x y r 2
+		HexCorner x y r 3
+		HexCorner x y r 4
+		HexCorner x y r 5
+
 	foreach [{{ sides size rot pFine stroke } { name dual triple } { high slashTop sMid halfXH slashBot } } : items-of asteriskKinds] : begin
 		create-glyph (name + '.' + sMid) : glyph-proc
 			local radius : LongJut * size
 			local fine : stroke * pFine
 			local final : 0.5 * [Math.min stroke (radius * Math.PI / sides)]
+			local fVor : para.vorAsterisk && para.vorAsterisk > 0 && sides == 6 && rot == 0
 
-			foreach j [range 0 sides] : begin
-				local s : Math.sin ((2 * j / sides + rot) * Math.PI)
-				local c : Math.cos ((2 * j / sides + rot) * Math.PI)
-				include : dispiro
-					flat Middle                 SymbolMid               [widths.center : 2 * fine]
-					curl (Middle + radius * s) (SymbolMid + radius * c) [widths.center : 2 * final]
+			if [not fVor] : include : AsteriskArms sides rot radius fine final
+			if fVor : begin
+				include : difference [AsteriskArms sides rot radius fine final] [HexAt Middle SymbolMid (radius * 0.42)]
+				include : HexAt Middle SymbolMid (radius * 0.14)
 
 		if high : create-glyph (name + '.' + high) : composite-proc
 			refer-glyph (name + '.' + sMid)

@@ -173,11 +173,13 @@ glyph-block Mark-Above : begin
 		local radiusIn  : radiusOut - markFine * [linreg 16 2 90 1.75 markStroke]
 		return [object radiusIn radiusOut]
 
+	# Terminale: with `lauraRing`, the ring is a true circle: Laura's ring, the one round shape in a squarish family.
+	# It serves ů, å, the degree sign and, later, the ring over i.
 	define [RingShape cx cy _radiusOut] : glyph-proc
 		local [object radiusIn radiusOut] : RingDims _radiusOut
-		include : difference
-			DotAt cx cy radiusOut
-			DotAt cx cy radiusIn
+		local fRound : para.lauraRing && para.lauraRing > 0
+		if fRound : include : difference [Circle.Outline.DotAt cx cy radiusOut] [Circle.Outline.DotAt cx cy radiusIn]
+		if [not fRound] : include : difference [DotAt cx cy radiusOut] [DotAt cx cy radiusIn]
 
 	create-glyph 'ringAbove' 0x30A : glyph-proc
 		set-width 0
